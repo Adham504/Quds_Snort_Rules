@@ -1,0 +1,81 @@
+Note this rules may need to be fixed :) 
+*****************************************
+
+Detecting a VoIP Connection:
+log udp any any -> any 5060 (msg:"VOIP Messages"; classtype:misc-attack; sid:100000; rev:1;)
+
+
+Detecting HTTP within a SMB Session:
+log tcp any any -> any 445 (msg:"HTTP over SMB"; flow:established; content:"|FF534D427|"; content:"HTTP"; nocase; classtype:policy-violation; reference:url,www.linklogger.com/TCP445Scan3.htm; sid:10000; rev:1;)
+
+
+Detecting a DNS Re-binding Attack
+alert tcp any 53 -> any any (msg:"DNS Rebind Attack"; flow:established,from_server; content:"|c00c00010001|"; content:"|1004c0a8|"; within:4; distance:4; reference:url,crypto.stanford.edu/dns/; classtype:misc-attack; sid:2006917; rev:5;)
+
+
+Detecting Inappropriate Content:
+alert tcp any any -> 192.168.1.100 80 (msg:"Bad Word Detected"; flow:from_server,established; content:"hacking"; nocase; classtype:policy-violation; sid:101; rev:1;)
+
+
+Detect Adobe Acrobat Reader Exploit:
+alert tcp 192.168.1.1/24 any -> 192.168.1.2 80 (msg:"PDF Exploit"; flow:to_server,established; uricontent:".pdf|00|"; nocase; reference:url,idefense.com/application/poi/display?id=126&type=vulnerabilities; reference:cve,2004-0629; classtype:attempted-admin; sid:2001217; rev:7;)
+
+
+Detecting HTTP Requests:
+log tcp any any -> 192.168.1.100 80 (msg:"HTTP Request"; content:"index.htm"; classtype:misc-attack; sid:101; rev:1;)
+
+
+Detecting a VoIP Connection:
+log udp any any -> any 5060 (msg:"VOIP Messages"; classtype:misc-attack; sid:100000; rev:1;)
+
+
+Detecting HTTP within a SMB Session:
+log tcp any any -> any 445 (msg:"HTTP over SMB"; flow:established; content:"|FF534D427|"; content:"HTTP"; nocase; classtype:policy-violation; reference:url,www.linklogger.com/TCP445Scan3.htm; sid:10000; rev:1;)
+
+
+Detecting P2P Software:
+alert tcp any any -> any any (msg:"P2P Traffic"; flow:established; content:"User-Agent: LimeWire"; nocase; classtype:policy-violation; reference:url,www.limewire.com; sid:2001808; rev:3;)
+
+
+Detecting the Word 'password':
+alert tcp any any -> any any (msg:"Password Detected"; flow:to_server,established; pcre:"/\W[p][a4@][sz5]{0,2}w?[d]\W/ism"; classtype:policy-violation; sid:2002567; rev:2;)
+
+
+Detecting a Zipped DOC:
+alert tcp any any -> any any (msg:"Zipped DOC"; flow:established; content:"|504B0304|"; content:"|00|"; content:".doc"; nocase; classtype:not-suspicious; sid:2001402; rev:3;)
+
+
+Detecting a DNS Re-binding Attack:
+alert tcp any 53 -> any any (msg:"DNS Rebind Attack"; flow:established,from_server; content:"|c00c00010001|"; content:"|1004c0a8|"; within:4; distance:4; reference:url,crypto.stanford.edu/dns/; classtype:misc-attack; sid:2006917; rev:5;)
+
+
+Detect a Potential POP3 Attack:
+alert tcp any any -> 192.168.1.100/24 110 (msg:"POP3 Brute Force"; flags:S,12; threshold: type both, track by_src, count 10, seconds 120; classtype:misc-activity; sid:2002992; rev:2;)
+
+
+Detecting X-Window Sessions:
+alert tcp 192.168.1.100/24 any -> any 6000 (msg:"XWindows Session"; flow:from_server,established; nocase; classtype:misc-attack; sid:101; rev:1;)
+
+
+Detect an IMAP Buffer Overflow:
+activate tcp 192.168.1.100/24 any -> 192.168.1.100/24 143 (msg:"IMAP Overflow"; flags:PA; content:"|E8C0FFFFFF|/bin"; activates:1; dynamic tcp 192.168.1.100/24 any -> 192.168.1.100/24 143 (activated_by:1; count:64;))
+
+
+Logging Suspicious IP Addresses:
+log ip [172.16.4.2,192.19.2.2] any -> 192.168.1.1/24 any (msg:"Bad IP Detected"; sid:100; rev:1;)
+
+
+Detecting a Microsoft Outlook Exploit:
+alert tcp 192.168.1.100/24 any -> any 80 (msg:"Outlook Exploit"; flow:from_server,established; content:"mailto:"; content:"&quote"; nocase; classtype:misc-attack; sid:101; rev:1;)
+
+
+Detecting a Worm:
+alert tcp 192.168.1.100/24 any -> any 139 (msg:"BugBear Worm"; flow:established; content:"|7700696B002E006500780065000000|"; reference:url,www.symantec.com/avcenter/venc/data/w32.bugbear@mm.html; classtype:misc-activity; sid:2001766; rev:4;)
+
+
+Detecting Telnet Use:
+alert tcp 192.168.1.100/24 23 <> 192.168.1.100/24 23 (msg:"Telnet Usage"; classtype:misc-attack; sid:100; rev:1;)
+
+
+Checking for ICMP Packets:
+alert icmp 192.168.1.100/24 any -> 192.168.1.1 any (msg:"ICMP Traffic"; classtype:misc-attack; sid:100; rev:1;)
