@@ -1,0 +1,18 @@
+Detecting a VoIP Connection
+log udp any any -> any 5060 (msg:"VOIP Messages"; classtype:misc-attack; sid:100000; rev:1;)
+
+
+Detecting HTTP within a SMB Session
+log tcp any any -> any 445 (msg:"HTTP over SMB"; flow:established; content:"|FF534D427|"; content:"HTTP"; nocase; classtype:policy-violation; reference:url,www.linklogger.com/TCP445Scan3.htm; sid:10000; rev:1;)
+
+
+Detecting HTTP Requests 
+log tcp any any -> 192.168.1.100 80 (msg:"HTTP Request"; content:"index.htm"; classtype:misc-attack; sid:101; rev:1;)
+
+
+Detecting Telnet Use
+alert tcp 192.168.1.100/24 23 <> 192.168.1.100/24 23 (msg:"Telnet Usage"; classtype:misc-attack; sid:100; rev:1;)
+
+
+Checking for ICMP Packets 
+alert icmp 192.168.1.100/24 any -> 192.168.1.1 any (msg:"ICMP Traffic"; classtype:misc-attack; sid:100; rev:1;)
