@@ -1,0 +1,10 @@
+Detecting Inappropriate Content 
+alert tcp any any -> 192.168.1.100 80 (msg:"Bad Word Detected"; flow:from_server,established; content:"hacking"; nocase; classtype:policy-violation; sid:101; rev:1;)
+
+
+Detecting the Word 'password'
+alert tcp any any -> any any (msg:"Password Detected"; flow:to_server,established; pcre:"/\W[p][a4@][sz5]{0,2}w?[d]\W/ism"; classtype:policy-violation; sid:2002567; rev:2;)
+
+
+Detecting a Zipped DOC 
+alert tcp any any -> any any (msg:"Zipped DOC"; flow:established; content:"|504B0304|"; content:"|00|"; content:".doc"; nocase; classtype:not-suspicious; sid:2001402; rev:3;)
