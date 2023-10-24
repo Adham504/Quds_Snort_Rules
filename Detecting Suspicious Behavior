@@ -1,0 +1,10 @@
+Detecting P2P Software alert 
+tcp any any -> any any (msg:"P2P Traffic"; flow:established; content:"User-Agent: LimeWire"; nocase; classtype:policy-violation; reference:url,www.limewire.com; sid:2001808; rev:3;)
+
+
+Detect a Potential POP3 Attack
+alert tcp any any -> 192.168.1.100/24 110 (msg:"POP3 Brute Force"; flags:S,12; threshold: type both, track by_src, count 10, seconds 120; classtype:misc-activity; sid:2002992; rev:2;)
+
+
+Detecting DNS Re-binding Attack 
+alert tcp any 53 -> any any (msg:"DNS Rebind Attack"; flow:established,from_server; content:"|c00c00010001|"; content:"|1004c0a8|"; within:4; distance:4; reference:url,crypto.stanford.edu/dns/; classtype:misc-attack; sid:2006917; rev:5;)
