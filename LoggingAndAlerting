@@ -1,0 +1,5 @@
+Logging Suspicious IP Addresses 
+log ip [172.16.4.2,192.19.2.2] any -> 192.168.1.1/24 any (msg:"Bad IP Detected"; sid:100; rev:1;)
+
+Detecting X-Window Sessions
+alert tcp 192.168.1.100/24 any -> any 6000 (msg:"XWindows Session"; flow:from_server,established; nocase; classtype:misc-attack; sid:101; rev:1;)
